@@ -3,7 +3,7 @@ var svgHeight = 750;
 var margin = {
   top: 20,
   right: 40,
-  bottom: 20,
+  bottom: 60,
   left: 100
 };
 
@@ -145,13 +145,11 @@ d3.csv("../assets/data/data.csv").then(function(stateData) {
       .attr("x", 0 - (height / 2))
       .attr("dy", "1em")
       .attr("class", "axisText")
-      .text("Age");
+      .text("Avg Age");
     chartGroup.append("text")
       .attr("transform", `translate(${width / 2}, ${height + margin.top + 30})`)
       .attr("class", "axisText")
       .text("Avg Obesity Rates (%)");
-      //  UNABLE TO FIGURE OUT WHY X AXIS LABEL IS NOT SHOWING ON GRAPH   --  HAVE LOOKED AT ALL SORTS OF PADDING SIZES
-      //  WAS THERE ORIGINALLY, THEN NOTICED IT MISSING AFTER TRYING TO MOVE HTML SCRIPT DOWN TO MAKE LOOK BETTER
       
 
   }).catch(function(error) {

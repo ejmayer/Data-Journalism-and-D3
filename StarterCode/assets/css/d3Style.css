@@ -38,6 +38,7 @@
 .chart {
   display: block;
   margin: 0;
+  padding-bottom: 200px;
 }
 
 .d3-tip {
