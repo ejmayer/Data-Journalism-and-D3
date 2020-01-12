@@ -1,5 +1,5 @@
-var svgWidth = 960;
-var svgHeight = 500;
+var svgWidth = 1050;
+var svgHeight = 750;
 var margin = {
   top: 20,
   right: 40,
@@ -10,7 +10,6 @@ var margin = {
 var width = svgWidth - margin.left - margin.right;
 var height = svgHeight - margin.top - margin.bottom;
 
-
 // Create an SVG wrapper, append an SVG group that will hold our chart, and shift the latter by left and top margins.
 var svg = d3.select(".scatter")
   .append("svg")
@@ -19,13 +18,12 @@ var svg = d3.select(".scatter")
 var chartGroup = svg.append("g")
   .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-
 // Import Data
 d3.csv("../assets/data/data.csv").then(function(stateData) {
 
-
-    // Step 1: Parse Data
+    // Parse Data
     // ==============================
+    // verify load
      console.log(stateData);
   
     // log a list of states
@@ -33,19 +31,15 @@ d3.csv("../assets/data/data.csv").then(function(stateData) {
     console.log("states", states);
   
     // log a list of ages
-    // var stateAbbrs = stateData.map(data => data.abbr);
-    // console.log("ST's", stateAbbrs);
+    var stateAbbrs = stateData.map(data => data.abbr);
+    console.log("ST's", stateAbbrs);
    
-    // // log a list of obesity rates
-    // var obesityRates = stateData.map(data => data.obesity);
-    // console.log("obesity rates", obesityRates);
-
-
+    // log a list of obesity rates
+    var obesityRates = stateData.map(data => data.obesity);
+    console.log("obesity rates", obesityRates);
 
     // Cast each value in data as a number using the unary + operator
-    stateData.forEach(function(data) 
-    {
-
+    stateData.forEach(function(data) {
 
       data.age= +data.age;
       data.obesity = +data.obesity;
@@ -54,14 +48,10 @@ d3.csv("../assets/data/data.csv").then(function(stateData) {
 
       console.log("State:", data.abbr);
       console.log("ST ", data.state);
-
-      
       console.log("Age:", data.age);
       console.log("Obesity:", data.obesity);
       
-
-
-    // Step 2: Create scale functions
+    // Create scale functions
     // ==============================
     var xLinearScale = d3.scaleLinear()
       .domain([20, d3.max(stateData, d => d.obesity)])
@@ -73,16 +63,12 @@ d3.csv("../assets/data/data.csv").then(function(stateData) {
       console.log("Scale age ", data.age);
       console.log("Scale obesity ", data.obesity);
 
-
-      
-
-    // Step 3: Create axis functions
+    // Create axis functions
     // ==============================
     var bottomAxis = d3.axisBottom(xLinearScale);
     var leftAxis = d3.axisLeft(yLinearScale);
 
-
-    // Step 4: Append Axes to the chart
+    // Append Axes to the chart
     // ==============================
     chartGroup.append("g")
       .attr("transform", `translate(0, ${height})`)
@@ -90,8 +76,7 @@ d3.csv("../assets/data/data.csv").then(function(stateData) {
     chartGroup.append("g")
       .call(leftAxis);
 
-
-    // Step 5: Create Circles
+    // Create Circles
     // ==============================
     var circlesGroup = chartGroup.selectAll("circle")
     .data(stateData)
@@ -118,25 +103,18 @@ d3.csv("../assets/data/data.csv").then(function(stateData) {
     .attr("font-size", "20px")
     .attr("fill", "black");
 
-//       // Now let's make a grouping for our dots and their labels.
-//   var theCircles = svg.selectAll("g theCircles").data(theData).enter();
+    // Create text for circles
+    var circleText = chartGroup.selectAll("null")
+        .data(stateData)
+        .enter()
+        .append("text")
+        .attr("x", d => xLinearScale(d.obesity))
+        .attr("y", d => yLinearScale(d.age))
+        .attr("dy", "6")
+        .attr("dx", "-10")
+        .text(d => d.abbr);
 
-//   // We append the circles for each row of data (or each state, in this case).
-//   theCircles
-//     .append("circle")
-//     // These attr's specify location, size and class.
-//     .attr("cx", function(d) {
-//       return xScale(d[curX]);
-//     })
-//     .attr("cy", function(d) {
-//       return yScale(d[curY]);
-//     })
-//     .attr("r", circRadius)
-//     .attr("class", function(d) {
-//       return "stateCircle " + d.abbr;
-//     })
-
-    // Step 6: Initialize tool tip
+    // Initialize tool tip
     // ==============================
     var toolTip = d3.tip()
       .attr("class", "tooltip")
@@ -145,13 +123,11 @@ d3.csv("../assets/data/data.csv").then(function(stateData) {
         return (`${d.state}<br>Age: ${d.age}<br>Obesity Rates: ${d.obesity}`);
       });
 
-
-    // Step 7: Create tooltip in the chart
+    // Create tooltip in the chart
     // ==============================
     chartGroup.call(toolTip);
 
-
-    // Step 8: Create event listeners to display and hide the tooltip
+    // Create event listeners to display and hide the tooltip
     // ==============================
     circlesGroup.on("mouseover", function(data) {
         toolTip.show(data, this);
@@ -161,7 +137,6 @@ d3.csv("../assets/data/data.csv").then(function(stateData) {
       .on("mouseout", function(data, index) {
         toolTip.hide(data);
       });
-
 
     // Create axes labels
     chartGroup.append("text")
@@ -175,11 +150,12 @@ d3.csv("../assets/data/data.csv").then(function(stateData) {
       .attr("transform", `translate(${width / 2}, ${height + margin.top + 30})`)
       .attr("class", "axisText")
       .text("Avg Obesity Rates (%)");
-
+      //  UNABLE TO FIGURE OUT WHY X AXIS LABEL IS NOT SHOWING ON GRAPH   --  HAVE LOOKED AT ALL SORTS OF PADDING SIZES
+      //  WAS THERE ORIGINALLY, THEN NOTICED IT MISSING AFTER TRYING TO MOVE HTML SCRIPT DOWN TO MAKE LOOK BETTER
+      
 
   }).catch(function(error) {
     console.log(error);
   });
 
-});
-  
+}); 

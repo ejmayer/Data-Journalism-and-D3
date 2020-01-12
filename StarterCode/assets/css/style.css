@@ -11,9 +11,7 @@ html {
 
 body {
   /* Padding bottom by footer height */
-  padding-bottom: 80px;
-  padding-top: 20px;
-  color: purple;
+  padding-bottom: 10px;
 }
 
 #footer {
@@ -34,13 +32,13 @@ body {
 
 .tooltip {
   position: absolute;
-  width: 90px;
-  height: 70px;
+  width: 100px;
+  height: 90px;
   padding: 10px;
   font: 12px sans-serif;
   text-align: center;
   color: white;
-  background: lime;
+  background: gray;
   border: 10;
   border-radius: 10px;
 }
